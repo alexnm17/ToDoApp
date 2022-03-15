@@ -6,6 +6,7 @@ var Task = require('../models/task.js');
 var db = mongoose.connection;
 
 router.post('/', function (req, res) {
+    console.log(req);
     Task.create(req.body, function (err, taskinfo) {
       if (err) res.status(500).send(err);
       else res.sendStatus(200);

@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var TaskSchema = new Schema({
-  id: String,
-  task: String,
+  taskname: String,
   completed: Boolean,
   priority: String,
   deadline: Date

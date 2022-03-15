@@ -10,6 +10,12 @@ var tasksRouter = require('./routes/tasks');
 
 var app = express();
 
+var bodyParser  = require("body-parser");  
+var cors = require('cors');  
+app.use(cors());  
+app.use(bodyParser.json({limit: '50mb'}));  
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true})); 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
