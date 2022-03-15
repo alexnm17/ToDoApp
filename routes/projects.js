@@ -22,6 +22,13 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get('/:id', function (req, res) {
+  Project.findById(req.params.id, function (err, projectinfo) {
+    if (err) res.status(500).send(err);
+    else res.status(200).json(projectinfo);
+  });
+});
+
 /*Update project*/
 router.put("/:id", async (req, res) => {
   try {

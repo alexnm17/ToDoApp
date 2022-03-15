@@ -31,6 +31,13 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get('/:id', function (req, res) {
+  Task.findById(req.params.id, function (err, taskinfo) {
+    if (err) res.status(500).send(err);
+    else res.status(200).json(taskinfo);
+  });
+});
+
 /*Update task*/
 router.put("/:id", async (req, res) => {
   try {
