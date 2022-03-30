@@ -24,12 +24,16 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get('/:id', function (req, res) {
-  User.findById(req.params.id, function (err, userinfo) {
+router.get('/:mail', function (req, res) {
+
+  mail =req.params.mail;
+  console.log(mail);
+  User.findOne({email: mail}, function (err, userinfo) {
     if (err) res.status(500).send(err);
     else res.status(200).json(userinfo);
   });
 });
+
 
 /*Update user*/
 router.put("/:id", async (req, res) => {
@@ -54,6 +58,8 @@ router.delete("/:id", async (req, res) => {
       res.send(error);
   }
 });
+
+
 
 
 router.post('/login', function (req, res) {
@@ -95,9 +101,9 @@ router.post('/login', function (req, res) {
 
 router.post('/register', function (req, res) {
   let body = req.body;
-  let { name, email, password} = body;
+  let { email, password,username} = body;
   let user = new User({
-    name,
+    username,
     email,
     password: bcrypt.hashSync(password, 10)
   });
@@ -114,6 +120,8 @@ user.save((err, userDB) => {
        });
     })
 });
+
+
 
 
 module.exports = router;
