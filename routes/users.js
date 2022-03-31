@@ -60,8 +60,6 @@ router.delete("/:id", async (req, res) => {
 });
 
 
-
-
 router.post('/login', function (req, res) {
   let body = req.body;
 
@@ -101,11 +99,12 @@ router.post('/login', function (req, res) {
 
 router.post('/register', function (req, res) {
   let body = req.body;
-  let { email, password,username} = body;
+  let { email, password,username,rol} = body;
   let user = new User({
     username,
     email,
-    password: bcrypt.hashSync(password, 10)
+    password: bcrypt.hashSync(password, 10),
+    rol
   });
 user.save((err, userDB) => {
     if (err) {
@@ -120,8 +119,6 @@ user.save((err, userDB) => {
        });
     })
 });
-
-
 
 
 module.exports = router;
