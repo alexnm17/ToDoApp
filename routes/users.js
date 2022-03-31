@@ -60,7 +60,6 @@ router.delete("/:id", async (req, res) => {
 });
 
 
-
 router.post('/login', function (req, res) {
   let body = req.body;
 
@@ -120,5 +119,6 @@ user.save((err, userDB) => {
        });
     })
 });
+
 
 module.exports = router;
