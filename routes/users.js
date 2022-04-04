@@ -25,7 +25,6 @@ router.get("/", async (req, res) => {
 });
 
 router.get('/:mail', function (req, res) {
-
   mail =req.params.mail;
   console.log(mail);
   User.findOne({email: mail}, function (err, userinfo) {
@@ -33,7 +32,6 @@ router.get('/:mail', function (req, res) {
     else res.status(200).json(userinfo);
   });
 });
-
 
 /*Update user*/
 router.put("/:id", async (req, res) => {
@@ -62,7 +60,6 @@ router.delete("/:id", async (req, res) => {
 
 router.post('/login', function (req, res) {
   let body = req.body;
-
   User.findOne({ email: body.email }, (erro, userDB)=>{
       if (erro) {
         return res.status(500).json({
@@ -99,12 +96,12 @@ router.post('/login', function (req, res) {
 
 router.post('/register', function (req, res) {
   let body = req.body;
-  let { email, password,username,rol} = body;
+  let { email, password,username,role} = body;
   let user = new User({
     username,
     email,
     password: bcrypt.hashSync(password, 10),
-    rol
+    role
   });
 user.save((err, userDB) => {
     if (err) {

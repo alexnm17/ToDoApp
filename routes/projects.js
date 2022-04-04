@@ -32,6 +32,7 @@ router.get('/:id', function (req, res) {
 /*Update project*/
 router.put("/:id", async (req, res) => {
   try {
+      console.log(req.body);
       const project = await Project.findOneAndUpdate(
           { _id: req.params.id },
           req.body
