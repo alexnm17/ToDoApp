@@ -13,15 +13,7 @@ router.post('/', function (req, res) {
     });
   });
 
-  /* GET tasks listing */
-/*  
-router.get('/', function (res) {
-  Task.find().exec(function(err, tasks) {
-    if (err) res.status(500).send(err);
-    else res.status(200).json(tasks);
-  });
-});
-*/
+
 router.get("/", async (req, res) => {
   try {
       const tasks = await Task.find();
@@ -31,12 +23,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get('/:id', function (req, res) {
-  Task.findById(req.params.id, function (err, taskinfo) {
-    if (err) res.status(500).send(err);
-    else res.status(200).json(taskinfo);
-  });
-});
 
 /*Update task*/
 router.put("/:id", async (req, res) => {
