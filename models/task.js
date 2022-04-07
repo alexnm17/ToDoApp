@@ -4,6 +4,7 @@ var TaskSchema = new Schema({
   taskname: String,
   completed: Boolean,
   priority: String,
-  deadline: Date
+  deadline: Date,
+  email: String
 });
 module.exports = mongoose.model('Task', TaskSchema);
