@@ -9,7 +9,9 @@ const UserSchema=new Schema({
      index: true},
   password: String,
   username: String,
-  role: String
+  role: {
+    tipe:String
+  } 
 });
 
 module.exports = mongoose.model('user', UserSchema);
