@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 //Models
+const Usuarios = require("../models/user.js");
 var Project = require('../models/project.js');
 var db = mongoose.connection;
 
