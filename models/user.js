@@ -9,9 +9,8 @@ const UserSchema=new Schema({
      index: true},
   password: String,
   username: String,
-  role: {
-    tipe:String
-  } 
+  role: String,
+  friends: [String]
 });
 
 module.exports = mongoose.model('user', UserSchema);
