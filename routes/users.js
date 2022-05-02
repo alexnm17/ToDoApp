@@ -8,7 +8,7 @@ var User = require('../models/user.js');
 var db = mongoose.connection;
 
 router.post('/', function (req, res) {
-    console.log(req);
+    
     User.create(req.body, function (err, userinfo) {
       if (err) res.status(500).send(err);
       else res.sendStatus(200);
