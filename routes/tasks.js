@@ -1,12 +1,11 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
-const fetchuser = require("../Middleware/fetchuser");
 //Models
 var Task = require('../models/task.js');
 var db = mongoose.connection;
 
-router.post('/', fetchuser, function (req, res) {
+router.post('/', function (req, res) {
     console.log(req);
     Task.create(req.body, function (err, taskinfo) {
       if (err) res.status(500).send(err);
@@ -15,7 +14,7 @@ router.post('/', fetchuser, function (req, res) {
   });
 
 
-router.get("/", fetchuser, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
       const tasks = await Task.find();
       res.send(tasks);
@@ -26,7 +25,7 @@ router.get("/", fetchuser, async (req, res) => {
 
 
 /*Update task*/
-router.put("/:id", fetchuser, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
       const task = await Task.findOneAndUpdate(
           { _id: req.params.id },
@@ -40,7 +39,7 @@ router.put("/:id", fetchuser, async (req, res) => {
 
 
 /*Delete task*/
-router.delete("/:id", fetchuser, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
       const task = await Task.findByIdAndDelete(req.params.id);
       res.send(task);

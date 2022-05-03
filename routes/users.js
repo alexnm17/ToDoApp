@@ -7,23 +7,15 @@ const bcrypt = require('bcrypt');
 var User = require('../models/user.js');
 var db = mongoose.connection;
 
-
-const JWT = require("jose");
-const fetchuser=require('../Middleware/fetchuser');
-const user = require('../models/user.js');
-
-const JWT_Secret = "Clave"; 
-
-router.post('/',fetchuser, function (req, res) {
-    console.log(req);
-
+router.post('/', function (req, res) {
+    
     User.create(req.body, function (err, userinfo) {
       if (err) res.status(500).send(err);
       else res.sendStatus(200);
     });
   });
 
-router.get("/", fetchuser, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
       const users = await User.find();
       res.send(users);
@@ -32,7 +24,7 @@ router.get("/", fetchuser, async (req, res) => {
   }
 });
 
-router.get('/:mail',fetchuser, function (req, res) {
+router.get('/:mail', function (req, res) {
   mail =req.params.mail;
   console.log(mail);
   User.findOne({email: mail}, function (err, userinfo) {
@@ -42,7 +34,7 @@ router.get('/:mail',fetchuser, function (req, res) {
 });
 
 /*Update user*/
-router.put("/:id", fetchuser, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
       const user = await User.findOneAndUpdate(
           { _id: req.params.id },
@@ -56,7 +48,7 @@ router.put("/:id", fetchuser, async (req, res) => {
 
 
 /*Delete User*/
-router.delete("/:id", fetchuser, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
       const user = await User.findByIdAndDelete(req.params.id);
       res.send(user);
@@ -93,17 +85,10 @@ router.post('/login', function (req, res) {
           }
        });
     }
-    const data={
-      user:{
-        id: userDB._id
-      }
-    }
-    const authtoken=JWT.SignJWT(data,JWT_Secret)
  // Devuelve ok
      res.json({
          ok: true,
-         usuario: userDB,
-         token: authtoken
+         usuario: userDB
      })
  })
 });
@@ -125,18 +110,12 @@ user.save((err, userDB) => {
          err,
       });
     }
-    const data={
-      user:{
-        id: userDB._id
-      }
-    }
-    const authtoken=JWT.SignJWT(data,JWT_Secret)
- // Devuelve ok
-     res.json({
-         ok: true,
-         usuario: userDB,
-         token: authtoken
-     })
- })
+    res.json({
+          ok: true,
+          usuario: userDB
+       });
+    })
 });
+
+
 module.exports = router;
