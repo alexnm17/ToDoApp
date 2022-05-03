@@ -18,7 +18,7 @@ router.post('/', function (req, res) {
         })
      }
      if (message) {
-      return res.status(400).json({
+      return res.status(401).json({
         ok: false,
         err: {
             message: "You have already sent a friend request to this person"
