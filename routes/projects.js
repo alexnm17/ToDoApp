@@ -5,7 +5,9 @@ var router = express.Router();
 var Project = require('../models/project.js');
 var db = mongoose.connection;
 
-router.post('/', function (req, res) {
+const fetchuser = require("../Middleware/fetchuser");
+
+router.post('/', fetchuser, function (req, res) {
     console.log(req);
     Project.create(req.body, function (err, taskinfo) {
       if (err) res.status(500).send(err);
@@ -13,7 +15,7 @@ router.post('/', function (req, res) {
     });
   });
 
-router.get("/", async (req, res) => {
+router.get("/", fetchuser, async (req, res) => {
   try {
       const project = await Project.find();
       res.send(project);
@@ -22,7 +24,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get('/:id', function (req, res) {
+router.get('/:id', fetchuser, function (req, res) {
   Project.findById(req.params.id, function (err, projectinfo) {
     if (err) res.status(500).send(err);
     else res.status(200).json(projectinfo);
@@ -30,7 +32,7 @@ router.get('/:id', function (req, res) {
 });
 
 /*Update project*/
-router.put("/:id", async (req, res) => {
+router.put("/:id", fetchuser, async (req, res) => {
   try {
       console.log(req.body);
       const project = await Project.findOneAndUpdate(
@@ -45,7 +47,7 @@ router.put("/:id", async (req, res) => {
 
 
 /*Delete project*/
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", fetchuser, async (req, res) => {
   try {
       const project = await Project.findByIdAndDelete(req.params.id);
       res.send(project);
