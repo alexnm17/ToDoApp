@@ -1,11 +1,12 @@
 const JWT = require("jose");
-const JWT_Secret = "SuperSecreto";
+const JWT_Secret = "Clave"; 
 
 const fetchuser=(req, res, next)=>{
     //Get the user from the JWT token and add id to the req object
     const token=req.header('auth-token')
     if(!token){
-        res.status(401).send({error:"Did not find any token. Please enter correctly"})
+        res.status(401).send({
+            error:"Did not find any token. Please enter correctly"})
     }
     else{
         try {
@@ -13,7 +14,8 @@ const fetchuser=(req, res, next)=>{
             req.user=data.user
             next()    
         } catch (error) {
-            res.status(401).send({error:"Did not find any token. Please enter correctly(catch)"})
+            res.status(401).send({
+                error:"Did not find any token. Please enter correctly(catch)"})
         }
     }
 }

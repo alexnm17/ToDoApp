@@ -2,13 +2,67 @@ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 const bcrypt = require('bcrypt');
-const JWT = require("jsonwebtoken");
-const fetchuser=require('../Middleware/fetchuser')
-const JWT_Secret = "SuperSecreto"; 
 
 //Models
 var User = require('../models/user.js');
 var db = mongoose.connection;
+
+const JWT = require("jose");
+const fetchuser=require('../Middleware/fetchuser');
+const user = require('../models/user.js');
+
+const JWT_Secret = "Clave"; 
+
+router.post('/',fetchuser, function (req, res) {
+    console.log(req);
+    User.create(req.body, function (err, userinfo) {
+      if (err) res.status(500).send(err);
+      else res.sendStatus(200);
+    });
+  });
+
+router.get("/", fetchuser, async (req, res) => {
+  try {
+      const users = await User.find();
+      res.send(users);
+  } catch (error) {
+      res.send(error);
+  }
+});
+
+router.get('/:mail',fetchuser, function (req, res) {
+  mail =req.params.mail;
+  console.log(mail);
+  User.findOne({email: mail}, function (err, userinfo) {
+    if (err) res.status(500).send(err);
+    else res.status(200).json(userinfo);
+  });
+});
+
+/*Update user*/
+router.put("/:id", fetchuser, async (req, res) => {
+  try {
+      const user = await User.findOneAndUpdate(
+          { _id: req.params.id },
+          req.body
+      );
+      res.send(user);
+  } catch (error) {
+      res.send(error);
+  }
+});
+
+
+/*Delete User*/
+router.delete("/:id", fetchuser, async (req, res) => {
+  try {
+      const user = await User.findByIdAndDelete(req.params.id);
+      res.send(user);
+  } catch (error) {
+      res.send(error);
+  }
+});
+
 
 router.post('/login', function (req, res) {
   let body = req.body;
@@ -37,69 +91,21 @@ router.post('/login', function (req, res) {
           }
        });
     }
+    const data={
+      user:{
+        id: userDB._id
+      }
+    }
+    const authtoken=JWT.SignJWT(data,JWT_Secret)
  // Devuelve ok
      res.json({
          ok: true,
-         usuario: userDB
+         usuario: userDB,
+         token: authtoken
      })
-
-     const authtoken = JWT.sign(data, JWT_Secret)
-     console.log("Authorison token is:- " + authtoken);
-   
-      res.json({ Uploaded: "Successfully" ,authtoken});
-  
  })
 });
 
-router.post('/', function (req, res) {
-    console.log(req);
-    User.create(req.body, function (err, userinfo) {
-      if (err) res.status(500).send(err);
-      else res.sendStatus(200);
-    });
-  });
-
-router.get("/", async (req, res) => {
-  try {
-      const users = await User.find();
-      res.send(users);
-  } catch (error) {
-      res.send(error);
-  }
-});
-
-router.get('/:mail', function (req, res) {
-  mail =req.params.mail;
-  console.log(mail);
-  User.findOne({email: mail}, function (err, userinfo) {
-    if (err) res.status(500).send(err);
-    else res.status(200).json(userinfo);
-  });
-});
-
-/*Update user*/
-router.put("/:id", async (req, res) => {
-  try {
-      const user = await User.findOneAndUpdate(
-          { _id: req.params.id },
-          req.body
-      );
-      res.send(user);
-  } catch (error) {
-      res.send(error);
-  }
-});
-
-
-/*Delete User*/
-router.delete("/:id", async (req, res) => {
-  try {
-      const user = await User.findByIdAndDelete(req.params.id);
-      res.send(user);
-  } catch (error) {
-      res.send(error);
-  }
-});
 
 router.post('/register', function (req, res) {
   let body = req.body;
@@ -117,12 +123,18 @@ user.save((err, userDB) => {
          err,
       });
     }
-    res.json({
-          ok: true,
-          usuario: userDB
-       });
-    })
+    const data={
+      user:{
+        id: userDB._id
+      }
+    }
+    const authtoken=JWT.SignJWT(data,JWT_Secret)
+ // Devuelve ok
+     res.json({
+         ok: true,
+         usuario: userDB,
+         token: authtoken
+     })
+ })
 });
-
-
 module.exports = router;
