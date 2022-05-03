@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 var User = require('../models/user.js');
 var db = mongoose.connection;
 
+
 const JWT = require("jose");
 const fetchuser=require('../Middleware/fetchuser');
 const user = require('../models/user.js');
@@ -15,6 +16,7 @@ const JWT_Secret = "Clave";
 
 router.post('/',fetchuser, function (req, res) {
     console.log(req);
+
     User.create(req.body, function (err, userinfo) {
       if (err) res.status(500).send(err);
       else res.sendStatus(200);
